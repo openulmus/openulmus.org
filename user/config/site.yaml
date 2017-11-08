@@ -1,0 +1,9 @@
+title: Gravstrap theme
+author:
+  name: Joe Bloggs
+  email: 'joe@test.com'
+metadata:
+    description: Gravstrap Theme helps you to start a new Grav CMS site with Bootstrap support and several ready to use modules. It is also perfect to start a new Bootstrap custom theme, to create your unique design'
+
+redirects:
+    /internal: '/gravstrap-theme-versatile-internal-template[303]'

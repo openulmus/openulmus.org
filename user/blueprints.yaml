@@ -1,0 +1,16 @@
+name: Gravstrap Theme Skeleton
+version: 1.2.1
+description: "Gravstrap is a powerful Grav CMS plugin which simplifies Bootstrap components usage, implementing them as shortcodes. This theme, built on top of Gravstrap, helps you to start a new Bootstrap custom theme, to create your unique design"
+icon: picture-o
+author:
+  name: Giansimon Diblas
+  email: info@diblas.net
+  url: http://diblas.net
+homepage: https://github.com/giansi/gravstrap-theme-skeleton
+demo: http://gravstrap.diblas.net/
+keywords: "gravstrap, bootstrap, theme, responsive, html5, css3, jquery"
+bugs: https://github.com/giansi/gravstrap-theme-skeleton/issues
+license: MIT
+
+form:
+  validation: loose
