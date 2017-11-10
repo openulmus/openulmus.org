@@ -1,13 +1,13 @@
 title: Grav                                 # Name of the site
 
 author:
-  name: John Appleseed                      # Default author name
-  email: 'john@email.com'                   # Default author email
+  name: Mark Milutinovic                      # Default author name
+  email: 'mmilutinovic1313@gmail.com'                   # Default author email
 
 taxonomies: [category,tag]                  # Arbitrary list of taxonomy types
 
 metadata:
-  description: 'My Grav Site'               # Site description
+  description: 'OpenUlmus.org'               # Site description
 
 summary:
   enabled: true                             # enable or disable summary of page
