@@ -58,8 +58,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 [g-portfolio name=portfolio attributes="class:portfolio module"]
 
-## Showcase your work
-Use the `Portfolio module` to spread your works to the world
+## Open Ulmus Courses
+Open Ulmus offers a number of courses on various`Free Open Source Software` topics.
 
 ___
 
