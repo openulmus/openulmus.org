@@ -64,34 +64,15 @@ Open Ulmus offers a number of courses on various`Free Open Source Software` topi
 ___
 
 [g-thumbnail]
-[g-thumbnail-item image="coffee.jpg" url="http://diblas.net"][/g-thumbnail-item]
-[g-thumbnail-item image="farmerboy.jpg" url="http://diblas.net"][/g-thumbnail-item]
-[g-thumbnail-item image="girl.jpg" url="http://diblas.net"][/g-thumbnail-item]
-[g-thumbnail-item image="judah.jpg" url="http://diblas.net"][/g-thumbnail-item]
-[g-thumbnail-item image="origami.jpg" url="http://diblas.net"][/g-thumbnail-item]
-[g-thumbnail-item image="retrocam.jpg" url="http://diblas.net"][/g-thumbnail-item]
+[g-thumbnail-item image="coffee.jpg" url="https://blog.openulmus.org/gettingsta/user"][/g-thumbnail-item]
+[g-thumbnail-item image="farmerboy.jpg" url="https://blog.openulmus.org/gettingsta/user"][/g-thumbnail-item]
+[g-thumbnail-item image="girl.jpg" url="https://blog.openulmus.org/gettingsta/user"][/g-thumbnail-item]
+[g-thumbnail-item image="judah.jpg" url="https://blog.openulmus.org/gettingsta/user"][/g-thumbnail-item]
+[g-thumbnail-item image="origami.jpg" url="https://blog.openulmus.org/gettingsta/user"][/g-thumbnail-item]
+[g-thumbnail-item image="retrocam.jpg" url="https://blog.openulmus.org/gettingsta/user"][/g-thumbnail-item]
 [/g-thumbnail]
 
 [/g-portfolio]
-
-
-[g-clients name=clients attributes="class:clients module"]
-
-## Show out the clients who trust your business
-Use the `Clients module` to show your customers, the clients who already trust your business
-
-___
-
-[g-clients-item image="apple.svg" attributes="class:col-md-3"][/g-clients-item]
-[g-clients-item image="canon.svg" attributes="class:col-md-3"][/g-clients-item]
-[g-clients-item image="forbes.svg" attributes="class:col-md-3"][/g-clients-item]
-[g-clients-item image="hp.svg" attributes="class:col-md-3"][/g-clients-item]
-[g-clients-item image="intel.svg" attributes="class:col-md-3"][/g-clients-item]
-[g-clients-item image="samsung.svg" attributes="class:col-md-3"][/g-clients-item]
-[g-clients-item image="siemens.svg" attributes="class:col-md-3"][/g-clients-item]
-[g-clients-item image="vaio.svg" attributes="class:col-md-3"][/g-clients-item]
-
-[/g-clients]
 
 [g-team name=team attributes="class:team module"]
 
@@ -131,21 +112,23 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 [/g-team-item]
 [/g-team]
 
-[g-where-we-are name=where-we-are attributes="class:module where-we-are"]
+[g-clients name=clients attributes="class:clients module"]
 
-## Show your customers where you are
-Use the `Where we are` module to tell your customers where you are
+## Show out the clients who trust your business
+Use the `Clients module` to show your customers, the clients who already trust your business
 
 ___
 
-[g-map id=map zoom=12 center="41.90278,12.49637"]
-[g-map-marker location="41.90278, 12.49637" title="Gravstrap theme"]
-**Meet Us**
-We are there!
-[/g-map-marker]
-[/g-map]
+[g-clients-item image="apple.svg" attributes="class:col-md-3"][/g-clients-item]
+[g-clients-item image="canon.svg" attributes="class:col-md-3"][/g-clients-item]
+[g-clients-item image="forbes.svg" attributes="class:col-md-3"][/g-clients-item]
+[g-clients-item image="hp.svg" attributes="class:col-md-3"][/g-clients-item]
+[g-clients-item image="intel.svg" attributes="class:col-md-3"][/g-clients-item]
+[g-clients-item image="samsung.svg" attributes="class:col-md-3"][/g-clients-item]
+[g-clients-item image="siemens.svg" attributes="class:col-md-3"][/g-clients-item]
+[g-clients-item image="vaio.svg" attributes="class:col-md-3"][/g-clients-item]
 
-[/g-where-we-are]
+[/g-clients]
 
 [g-contacts name=contacts attributes="class:module contacts" info_attributes="class:col-md-4" form_attributes="class:col-md-8"]
 
