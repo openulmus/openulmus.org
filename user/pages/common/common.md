@@ -6,9 +6,9 @@ cache_enable: false
 [g-navbar id="navbar1" name=navbar1 fixed=top centering=none brand_text="Gravstrap" render=false]
     [g-navbar-menu name=menu0 alignment="center" submenu="internal,components" attributes="class:highdensity-menu"][/g-navbar-menu]    
     [g-navbar-menu name=menu1 icon_type="fontawesome" alignment="right" ]
-        [g-link url="https://facebook.com/gravstrap" icon_type="fontawesome" icon="facebook"][/g-link]
-        [g-link url="https://twitter.com/gravstrap" icon="twitter"][/g-link]
-        [g-link url="https://github.com/giansi/gravstrap" icon="github"][/g-link]
+        [g-link url="https://opencollective.slack.com/messages/C6464RTMK" icon_type="fontawesome" icon="slack"][/g-link]
+        [g-link url="https://twitter.com/openulmus" icon="twitter"][/g-link]
+        [g-link url="https://github.com/elmsln/openulmus.org" icon="github"][/g-link]
     [/g-navbar-menu]
 [/g-navbar]
 

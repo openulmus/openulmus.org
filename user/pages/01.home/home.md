@@ -84,9 +84,8 @@ ___
 [g-team-item image="jane.jpg" attributes="class:col-md-4"]
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 <div class="item-social">
-[g-link url="#" icon="twitter" icon_type="fontawesome" stacked=true][/g-link]
-[g-link url="#" icon="facebook" icon_type="fontawesome" stacked=true][/g-link]
-[g-link url="#" icon="linkedin" icon_type="fontawesome" stacked=true][/g-link]
+[g-link url="https://github.com/elmsln/openulmus.org" icon="github" icon_type="fontawesome" stacked=true][/g-link]
+[g-link url="https://twitter.com/openulmus" icon="twitter" icon_type="fontawesome" stacked=true][/g-link]
 </div>
 
 [/g-team-item]
@@ -94,9 +93,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 [g-team-item image="mark.jpg" attributes="class:col-md-4"]
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 <div class="item-social">
-[g-link url="#" icon="twitter" icon_type="fontawesome" stacked=true][/g-link]
-[g-link url="#" icon="facebook" icon_type="fontawesome" stacked=true][/g-link]
-[g-link url="#" icon="linkedin" icon_type="fontawesome" stacked=true][/g-link]
+[g-link url="https://github.com/elmsln/openulmus.org" icon="github" icon_type="fontawesome" stacked=true][/g-link]
+[g-link url="https://twitter.com/openulmus" icon="twitter" icon_type="fontawesome" stacked=true][/g-link]
 </div>
 
 [/g-team-item]
@@ -104,9 +102,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 [g-team-item image="julia.jpg" attributes="class:col-md-4"]
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 <div class="item-social">
-[g-link url="#" icon="twitter" icon_type="fontawesome" stacked=true][/g-link]
-[g-link url="#" icon="facebook" icon_type="fontawesome" stacked=true][/g-link]
-[g-link url="#" icon="linkedin" icon_type="fontawesome" stacked=true][/g-link]
+[g-link url="https://github.com/elmsln/openulmus.org" icon="github" icon_type="fontawesome" stacked=true][/g-link]
+[g-link url="https://twitter.com/openulmus" icon="twitter" icon_type="fontawesome" stacked=true][/g-link]
 </div>
 
 [/g-team-item]
@@ -132,35 +129,32 @@ ___
 
 [g-contacts name=contacts attributes="class:module contacts" info_attributes="class:col-md-4" form_attributes="class:col-md-8"]
 
-## Let your customers contact you
-Use the Contact module to let your customers contact you
+## Get in touch
+Need more information? Reach out to the Open Ulmus team using the following methods.
 
 ___
 
 [g-section name="form"]
-##### Get in touch
-Need some information? Ask us a question filling the form below
+##### Contact Form
+Please use this form to ask the Open Ulmus team additional questions and request a consultation for your project.
 
 [g-simple-form token="xxxxx" redirect_to="/thank-you-for-my-page" render=true][/g-simple-form]
 [/g-section]
 
 [g-section name="info"]
-#####OFFICE
+#####Links
 
-9 - 3815 Thatcher Avenue  
-Saskatoon, Saskatchewan  
-S7R 1A3
+**GitHub:** https://github.com/elmsln/openulmus.org
+**Twitter:** https://twitter.com/openulmus
 
-#####CONTACT INFORMATION
+#####Contact Information
 
-**Primary Phone:** 1 (555) 555 - 6666  
-**Alternate Phone:** 1 (555) 555 - 7777  
-**Fax:** 1 (555) 555 - 8888
+**Email:** info@openulmus.org 
+**Slack:** https://opencollective.slack.com/messages/C6464RTMK 
 
+#####Slack Office Hours
 
-#####OFFICE HOURS
-
-Monday - Friday 8 am - 5 pm  
+Monday - Friday 8 pm - 10 pm EST
 Saturday - Sunday Closed  
 [/g-section]
 [/g-contacts]
