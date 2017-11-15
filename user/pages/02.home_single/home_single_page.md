@@ -16,6 +16,5 @@ content:
             - _portfolio
             - _clients
             - _team
-            - _where_we_are
             - _contacts
 ---
