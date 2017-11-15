@@ -19,7 +19,7 @@ This website is made with [Grav CMS](http://getgrav.org/) and it is powerd by [G
 
 [/g-section]
 
-[g-section name="copyright"]Joe Bloggs[/g-section]
+[g-section name="copyright"]Open Ulmus[/g-section]
 [g-section name="license"]MIT License[/g-section]
 
 [/g-footer-one]
