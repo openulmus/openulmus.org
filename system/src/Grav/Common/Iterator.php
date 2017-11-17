@@ -2,7 +2,7 @@
 /**
  * @package    Grav.Common
  *
- * @copyright  Copyright (C) 2014 - 2016 RocketTheme, LLC. All rights reserved.
+ * @copyright  Copyright (C) 2014 - 2017 RocketTheme, LLC. All rights reserved.
  * @license    MIT License; see LICENSE file for details.
  */
 
@@ -189,6 +189,10 @@ class Iterator implements \ArrayAccess, \Iterator, \Countable, \Serializable
      */
     public function random($num = 1)
     {
+        if ($num > count($this->items)) {
+            $num = count($this->items);
+        }
+
         $this->items = array_intersect_key($this->items, array_flip((array)array_rand($this->items, $num)));
 
         return $this;

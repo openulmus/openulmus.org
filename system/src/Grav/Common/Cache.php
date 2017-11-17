@@ -2,7 +2,7 @@
 /**
  * @package    Grav.Common
  *
- * @copyright  Copyright (C) 2014 - 2016 RocketTheme, LLC. All rights reserved.
+ * @copyright  Copyright (C) 2014 - 2017 RocketTheme, LLC. All rights reserved.
  * @license    MIT License; see LICENSE file for details.
  */
 
@@ -11,12 +11,13 @@ namespace Grav\Common;
 use \Doctrine\Common\Cache as DoctrineCache;
 use Grav\Common\Config\Config;
 use Grav\Common\Filesystem\Folder;
-use Grav\Common\Grav;
+use RocketTheme\Toolbox\Event\Event;
 
 /**
  * The GravCache object is used throughout Grav to store and retrieve cached data.
  * It uses DoctrineCache library and supports a variety of caching mechanisms. Those include:
  *
+ * APCu
  * APC
  * XCache
  * RedisCache
@@ -62,10 +63,19 @@ class Cache extends Getters
         'asset://',
     ];
 
+    protected static $standard_remove_no_images = [
+        'cache://twig/',
+        'cache://doctrine/',
+        'cache://compiled/',
+        'cache://validated-',
+        'asset://',
+    ];
+
     protected static $all_remove = [
         'cache://',
         'cache://images',
-        'asset://'
+        'asset://',
+        'tmp://'
     ];
 
     protected static $assets_remove = [
@@ -78,6 +88,10 @@ class Cache extends Getters
 
     protected static $cache_remove = [
         'cache://'
+    ];
+
+    protected static $tmp_remove = [
+        'tmp://'
     ];
 
     /**
@@ -110,7 +124,9 @@ class Cache extends Getters
 
         $prefix = $this->config->get('system.cache.prefix');
 
-        $this->enabled = (bool)$this->config->get('system.cache.enabled');
+        if (is_null($this->enabled)) {
+            $this->enabled = (bool)$this->config->get('system.cache.enabled');
+        }
 
         // Cache key allows us to invalidate all cache on configuration changes.
         $this->key = ($prefix ? $prefix : 'g') . '-' . substr(md5($uri->rootUrl(true) . $this->config->key() . GRAV_VERSION),
@@ -122,10 +138,36 @@ class Cache extends Getters
 
         // Set the cache namespace to our unique key
         $this->driver->setNamespace($this->key);
+    }
 
-        // Dump Cache state
-        $grav['debugger']->addMessage('Cache: [' . ($this->enabled ? 'true' : 'false') . '] Setting: [' . $this->driver_setting . '] Driver: [' . $this->driver_name . ']');
+    /**
+     * Public accessor to set the enabled state of the cache
+     *
+     * @param $enabled
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = (bool) $enabled;
+    }
 
+    /**
+     * Returns the current enabled state
+     *
+     * @return bool
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * Get cache state
+     *
+     * @return string
+     */
+    public function getCacheStatus()
+    {
+        return 'Cache: [' . ($this->enabled ? 'true' : 'false') . '] Setting: [' . $this->driver_setting . '] Driver: [' . $this->driver_name . ']';
     }
 
     /**
@@ -139,6 +181,12 @@ class Cache extends Getters
     {
         $setting = $this->driver_setting;
         $driver_name = 'file';
+
+        // CLI compatibility requires a non-volatile cache driver
+        if ($this->config->get('system.cache.cli_compatibility') && (
+            $setting == 'auto' || $this->isVolatileDriver($setting))) {
+            $setting = $driver_name;
+        }
 
         if (!$setting || $setting == 'auto') {
             if (extension_loaded('apcu')) {
@@ -183,7 +231,7 @@ class Cache extends Getters
 
             case 'memcached':
                 $memcached = new \Memcached();
-                $memcached->connect($this->config->get('system.cache.memcached.server', 'localhost'),
+                $memcached->addServer($this->config->get('system.cache.memcached.server', 'localhost'),
                     $this->config->get('system.cache.memcached.port', 11211));
                 $driver = new DoctrineCache\MemcachedCache();
                 $driver->setMemcached($memcached);
@@ -191,8 +239,21 @@ class Cache extends Getters
 
             case 'redis':
                 $redis = new \Redis();
-                $redis->connect($this->config->get('system.cache.redis.server', 'localhost'),
+                $socket = $this->config->get('system.cache.redis.socket', false);
+                $password = $this->config->get('system.cache.redis.password', false);
+
+                if ($socket) {
+                    $redis->connect($socket);
+                } else {
+                    $redis->connect($this->config->get('system.cache.redis.server', 'localhost'),
                     $this->config->get('system.cache.redis.port', 6379));
+                }
+
+                // Authenticate with password if set
+                if ($password && !$redis->auth($password)) {
+                    throw new \RedisException('Redis authentication failed');
+                }
+
                 $driver = new DoctrineCache\RedisCache();
                 $driver->setRedis($redis);
                 break;
@@ -210,7 +271,7 @@ class Cache extends Getters
      *
      * @param  string $id the id of the cached entry
      *
-     * @return object     returns the cached entry, can be any type, or false if doesn't exist
+     * @return object|bool     returns the cached entry, can be any type, or false if doesn't exist
      */
     public function fetch($id)
     {
@@ -309,39 +370,52 @@ class Cache extends Getters
             case 'cache-only':
                 $remove_paths = self::$cache_remove;
                 break;
+            case 'tmp-only':
+                $remove_paths = self::$tmp_remove;
+                break;
             default:
-                $remove_paths = self::$standard_remove;
+                if (Grav::instance()['config']->get('system.cache.clear_images_by_default')) {
+                    $remove_paths = self::$standard_remove;
+                } else {
+                    $remove_paths = self::$standard_remove_no_images;
+                }
+
         }
 
+        // Clearing cache event to add paths to clear
+        Grav::instance()->fireEvent('onBeforeCacheClear', new Event(['remove' => $remove, 'paths' => &$remove_paths]));
 
         foreach ($remove_paths as $stream) {
 
             // Convert stream to a real path
-            $path = $locator->findResource($stream, true, true);
-            // Make sure path exists before proceeding, otherwise we would wipe ROOT_DIR
-            if (!$path) {
-                throw new \RuntimeException("Stream '{$stream}' not found", 500);
-            }
+            try {
+                $path = $locator->findResource($stream, true, true);
 
-            $anything = false;
-            $files = glob($path . '/*');
+                $anything = false;
+                $files = glob($path . '/*');
 
-            if (is_array($files)) {
-                foreach ($files as $file) {
-                    if (is_file($file)) {
-                        if (@unlink($file)) {
-                            $anything = true;
-                        }
-                    } elseif (is_dir($file)) {
-                        if (Folder::delete($file)) {
-                            $anything = true;
+                if (is_array($files)) {
+                    foreach ($files as $file) {
+                        if (is_link($file)) {
+                            $output[] = '<yellow>Skipping symlink:  </yellow>' . $file;
+                        } elseif (is_file($file)) {
+                            if (@unlink($file)) {
+                                $anything = true;
+                            }
+                        } elseif (is_dir($file)) {
+                            if (Folder::delete($file)) {
+                                $anything = true;
+                            }
                         }
                     }
                 }
-            }
 
-            if ($anything) {
-                $output[] = '<red>Cleared:  </red>' . $path . '/*';
+                if ($anything) {
+                    $output[] = '<red>Cleared:  </red>' . $path . '/*';
+                }
+            } catch (\Exception $e) {
+                // stream not found or another error while deleting files.
+                $output[] = '<red>ERROR: </red>' . $e->getMessage();
             }
         }
 
@@ -388,5 +462,40 @@ class Cache extends Getters
         }
 
         return $this->lifetime;
+    }
+
+    /**
+     * Returns the current driver name
+     *
+     * @return mixed
+     */
+    public function getDriverName()
+    {
+        return $this->driver_name;
+    }
+
+    /**
+     * Returns the current driver setting
+     *
+     * @return mixed
+     */
+    public function getDriverSetting()
+    {
+        return $this->driver_setting;
+    }
+
+    /**
+     * is this driver a volatile driver in that it resides in PHP process memory
+     *
+     * @param $setting
+     * @return bool
+     */
+    public function isVolatileDriver($setting)
+    {
+        if (in_array($setting, ['apc', 'apcu', 'xcache', 'wincache'])) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

@@ -2,7 +2,7 @@
 /**
  * @package    Grav.Common.FileSystem
  *
- * @copyright  Copyright (C) 2014 - 2016 RocketTheme, LLC. All rights reserved.
+ * @copyright  Copyright (C) 2014 - 2017 RocketTheme, LLC. All rights reserved.
  * @license    MIT License; see LICENSE file for details.
  */
 
@@ -70,13 +70,46 @@ abstract class Folder
 
         /** @var \RecursiveDirectoryIterator $file */
         foreach ($iterator as $filepath => $file) {
-            $file_modified = $file->getMTime();
-            if ($file_modified > $last_modified) {
-                $last_modified = $file_modified;
+            try {
+                $file_modified = $file->getMTime();
+                if ($file_modified > $last_modified) {
+                    $last_modified = $file_modified;
+                }
+            } catch (\Exception $e) {
+                Grav::instance()['log']->error('Could not process file: ' . $e->getMessage());
             }
         }
 
         return $last_modified;
+    }
+
+    /**
+     * Recursively md5 hash all files in a path
+     *
+     * @param $path
+     * @return string
+     */
+    public static function hashAllFiles($path)
+    {
+        $flags = \RecursiveDirectoryIterator::SKIP_DOTS;
+        $files = [];
+
+        /** @var UniformResourceLocator $locator */
+        $locator = Grav::instance()['locator'];
+        if ($locator->isStream($path)) {
+            $directory = $locator->getRecursiveIterator($path, $flags);
+        } else {
+            $directory = new \RecursiveDirectoryIterator($path, $flags);
+        }
+
+        $iterator = new \RecursiveIteratorIterator($directory, \RecursiveIteratorIterator::SELF_FIRST);
+
+        foreach ($iterator as $file) {
+            $files[] = $file->getPathname() . '?'. $file->getMTime();
+        }
+
+        $hash = md5(serialize($files));
+        return $hash;
     }
 
     /**
@@ -179,7 +212,8 @@ abstract class Folder
         /** @var UniformResourceLocator $locator */
         $locator = Grav::instance()['locator'];
         if ($recursive) {
-            $flags = \RecursiveDirectoryIterator::SKIP_DOTS + \FilesystemIterator::UNIX_PATHS + \FilesystemIterator::CURRENT_AS_SELF;
+            $flags = \RecursiveDirectoryIterator::SKIP_DOTS + \FilesystemIterator::UNIX_PATHS
+                + \FilesystemIterator::CURRENT_AS_SELF + \FilesystemIterator::FOLLOW_SYMLINKS;
             if ($locator->isStream($path)) {
                 $directory = $locator->getRecursiveIterator($path, $flags);
             } else {
@@ -299,7 +333,8 @@ abstract class Folder
      */
     public static function move($source, $target)
     {
-        if (!is_dir($source)) {
+        if (!file_exists($source) || !is_dir($source)) {
+            // Rename fails if source folder does not exist.
             throw new \RuntimeException('Cannot move non-existing folder.');
         }
 
@@ -308,20 +343,32 @@ abstract class Folder
             return;
         }
 
+        if (file_exists($target)) {
+            // Rename fails if target folder exists.
+            throw new \RuntimeException('Cannot move files to existing folder/file.');
+        }
+
         // Make sure that path to the target exists before moving.
         self::create(dirname($target));
 
-        // Just rename the directory.
-        $success = @rename($source, $target);
+        // Silence warnings (chmod failed etc).
+        @rename($source, $target);
 
-        if (!$success) {
-            $error = error_get_last();
-            throw new \RuntimeException($error['message']);
+        // Rename function can fail while still succeeding, so let's check if the folder exists.
+        if (!file_exists($target) || !is_dir($target)) {
+            // In some rare cases rename() creates file, not a folder. Get rid of it.
+            if (file_exists($target)) {
+                @unlink($target);
+            }
+            // Rename doesn't support moving folders across filesystems. Use copy instead.
+            self::copy($source, $target);
+            self::delete($source);
         }
 
         // Make sure that the change will be detected when caching.
         @touch(dirname($source));
         @touch(dirname($target));
+        @touch($target);
     }
 
     /**
@@ -357,7 +404,6 @@ abstract class Folder
     /**
      * @param  string  $folder
      * @throws \RuntimeException
-     * @internal
      */
     public static function mkdir($folder)
     {
@@ -367,7 +413,6 @@ abstract class Folder
     /**
      * @param  string  $folder
      * @throws \RuntimeException
-     * @internal
      */
     public static function create($folder)
     {
@@ -402,10 +447,7 @@ abstract class Folder
 
         // If the destination directory does not exist create it
         if (!is_dir($dest)) {
-            if (!mkdir($dest)) {
-                // If the destination directory could not be created stop processing
-                return false;
-            }
+            Folder::mkdir($dest);
         }
 
         // Open the source directory to read in files

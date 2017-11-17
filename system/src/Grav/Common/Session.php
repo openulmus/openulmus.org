@@ -2,7 +2,7 @@
 /**
  * @package    Grav.Common
  *
- * @copyright  Copyright (C) 2014 - 2016 RocketTheme, LLC. All rights reserved.
+ * @copyright  Copyright (C) 2014 - 2017 RocketTheme, LLC. All rights reserved.
  * @license    MIT License; see LICENSE file for details.
  */
 
@@ -38,7 +38,10 @@ class Session extends BaseSession
         $base_url = $uri->rootUrl(false);
 
         $session_timeout = $config->get('system.session.timeout', 1800);
-        $session_path = $config->get('system.session.path', '/' . ltrim($base_url, '/'));
+        $session_path = $config->get('system.session.path');
+        if (!$session_path) {
+            $session_path = '/' . ltrim($base_url, '/');
+        }
 
         // Activate admin if we're inside the admin path.
         if ($config->get('plugins.admin.enabled')) {
@@ -56,21 +59,34 @@ class Session extends BaseSession
         }
 
         if ($config->get('system.session.enabled') || $is_admin) {
-            // Define session service.
-            parent::__construct($session_timeout, $session_path);
-
             $domain = $uri->host();
             if ($domain === 'localhost') {
                 $domain = '';
             }
+
+            // Fix for HUGE session timeouts
+            if ($session_timeout > 99999999999) {
+                $session_timeout = 9999999999;
+            }
+
+            // Define session service.
+            parent::__construct($session_timeout, $session_path, $domain);
+
             $secure = $config->get('system.session.secure', false);
             $httponly = $config->get('system.session.httponly', true);
 
             $unique_identifier = GRAV_ROOT;
             $inflector = new Inflector();
-            $this->setName($inflector->hyphenize($config->get('system.session.name', 'grav_site')) . '-' . substr(md5($unique_identifier), 0, 7) . ($is_admin ? '-admin' : ''));
+            $session_name = $inflector->hyphenize($config->get('system.session.name', 'grav_site')) . '-' . substr(md5($unique_identifier), 0, 7);
+            $split_session = $config->get('system.session.split', true);
+            if ($is_admin && $split_session) {
+              $session_name .= '-admin';
+            }
+            $this->setName($session_name);
+            ini_set('session.cookie_secure', $secure);
+            ini_set('session.cookie_httponly', $httponly);
             $this->start();
-            setcookie(session_name(), session_id(), time() + $session_timeout, $session_path, $domain, $secure, $httponly);
+            setcookie(session_name(), session_id(), $session_timeout ? time() + $session_timeout : 0, $session_path, $domain, $secure, $httponly);
         }
     }
 

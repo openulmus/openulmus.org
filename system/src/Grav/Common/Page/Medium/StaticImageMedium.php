@@ -2,7 +2,7 @@
 /**
  * @package    Grav.Common.Page
  *
- * @copyright  Copyright (C) 2014 - 2016 RocketTheme, LLC. All rights reserved.
+ * @copyright  Copyright (C) 2014 - 2017 RocketTheme, LLC. All rights reserved.
  * @license    MIT License; see LICENSE file for details.
  */
 
@@ -23,6 +23,6 @@ class StaticImageMedium extends Medium
     {
         empty($attributes['src']) && $attributes['src'] = $this->url($reset);
 
-        return [ 'name' => 'image', 'attributes' => $attributes ];
+        return [ 'name' => 'img', 'attributes' => $attributes ];
     }
 }

@@ -2,13 +2,14 @@
 /**
  * @package    Grav.Common.Data
  *
- * @copyright  Copyright (C) 2014 - 2016 RocketTheme, LLC. All rights reserved.
+ * @copyright  Copyright (C) 2014 - 2017 RocketTheme, LLC. All rights reserved.
  * @license    MIT License; see LICENSE file for details.
  */
 
 namespace Grav\Common\Data;
 
 use Grav\Common\Grav;
+use Grav\Common\Utils;
 use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Yaml\Yaml;
@@ -37,9 +38,8 @@ class Validation
             $field['type'] = 'text';
         }
 
-        // Special case for files, value is never empty and errors with code 4 instead.
-        if (empty($validate['required']) && $field['type'] == 'file' && isset($value['error'])
-                && ($value['error'] == UPLOAD_ERR_NO_FILE || in_array(UPLOAD_ERR_NO_FILE, $value['error']))) {
+        // If this is a YAML field, stop validation
+        if (isset($field['yaml']) && $field['yaml'] === true) {
             return $messages;
         }
 
@@ -101,21 +101,9 @@ class Validation
             $field['type'] = 'text';
         }
 
-        // Special case for files, value is never empty and errors with code 4 instead.
-        if (empty($validate['required']) && $field['type'] == 'file' && isset($value['error'])
-            && ($value['error'] == UPLOAD_ERR_NO_FILE || in_array(UPLOAD_ERR_NO_FILE, $value['error']))) {
-            return null;
-        }
-
         // If this is a YAML field, simply parse it and return the value.
         if (isset($field['yaml']) && $field['yaml'] === true) {
-            try {
-                $yaml = new Parser();
-
-                return $yaml->parse($value);
-            } catch (ParseException $e) {
-                throw new \RuntimeException($e->getMessage());
-            }
+            return $value;
         }
 
         // Validate type with fallback type text.
@@ -177,6 +165,17 @@ class Validation
     {
         return is_array($value) ? true : self::typeText($value, $params, $field);
     }
+
+    protected static function filterLower($value, array $params)
+    {
+        return strtolower($value);
+    }
+
+    protected static function filterUpper($value, array $params)
+    {
+        return strtoupper($value);
+    }
+
 
     /**
      * HTML5 input: textarea
@@ -350,7 +349,7 @@ class Validation
 
     protected static function filterNumber($value, array $params, array $field)
     {
-        return (int) $value;
+        return (string)(int)$value !== (string)(float)$value ? (float) $value : (int) $value;
     }
 
     protected static function filterDateTime($value, array $params, array $field)
@@ -581,6 +580,7 @@ class Validation
             return null;
         }
 
+
         if ($options) {
             $useKey = isset($field['use']) && $field['use'] == 'keys';
             foreach ($values as $key => $value) {
@@ -592,9 +592,22 @@ class Validation
             foreach ($values as $key => $value) {
                 if (is_array($value)) {
                     $value = implode(',', $value);
+                    $values[$key] =  array_map('trim', explode(',', $value));
+                } else {
+                    $values[$key] =  trim($value);
+                }
+            }
+        }
+
+        if (isset($field['ignore_empty']) && Utils::isPositive($field['ignore_empty'])) {
+            foreach ($values as $key => $value) {
+                foreach ($value as $inner_key => $inner_value) {
+                    if ($inner_value == '') {
+                        unset($value[$inner_key]);
+                    }
                 }
 
-                $values[$key] =  array_map('trim', explode(',', $value));
+                $values[$key] = $value;
             }
         }
 
@@ -661,6 +674,7 @@ class Validation
     {
         return $value;
     }
+
 
     // HTML5 attributes (min, max and range are handled inside the types)
 

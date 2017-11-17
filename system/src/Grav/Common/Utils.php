@@ -2,15 +2,13 @@
 /**
  * @package    Grav.Common
  *
- * @copyright  Copyright (C) 2014 - 2016 RocketTheme, LLC. All rights reserved.
+ * @copyright  Copyright (C) 2014 - 2017 RocketTheme, LLC. All rights reserved.
  * @license    MIT License; see LICENSE file for details.
  */
 
 namespace Grav\Common;
 
 use DateTime;
-use DateTimeZone;
-use Grav\Common\Grav;
 use Grav\Common\Helpers\Truncator;
 use RocketTheme\Toolbox\Event\Event;
 
@@ -112,6 +110,26 @@ abstract class Utils
     }
 
     /**
+     * Recursive Merge with uniqueness
+     *
+     * @param $array1
+     * @param $array2
+     * @return mixed
+     */
+    public static function arrayMergeRecursiveUnique($array1, $array2)
+    {
+        if (empty($array1)) return $array2; //optimize the base case
+
+        foreach ($array2 as $key => $value) {
+            if (is_array($value) && is_array(@$array1[$key])) {
+                $value = static::arrayMergeRecursiveUnique($array1[$key], $value);
+            }
+            $array1[$key] = $value;
+        }
+        return $array1;
+    }
+
+    /**
      * Return the Grav date formats allowed
      *
      * @return array
@@ -183,26 +201,32 @@ abstract class Utils
      * Truncate HTML by number of characters. not "word-safe"!
      *
      * @param  string $text
-     * @param  int    $length
+     * @param  int $length in characters
+     * @param  string $ellipsis
      *
      * @return string
      */
-    public static function truncateHtml($text, $length = 100)
+    public static function truncateHtml($text, $length = 100, $ellipsis = '...')
     {
-        return Truncator::truncate($text, $length, ['length_in_chars' => true]);
+        if (mb_strlen($text) <= $length) {
+            return $text;
+        } else {
+        	return Truncator::truncateLetters($text, $length, $ellipsis);
+        }
     }
 
     /**
      * Truncate HTML by number of characters in a "word-safe" manor.
      *
      * @param  string $text
-     * @param  int    $length
+     * @param  int    $length in words
+     * @param  string $ellipsis
      *
      * @return string
      */
-    public static function safeTruncateHtml($text, $length = 100)
+    public static function safeTruncateHtml($text, $length = 25, $ellipsis = '...')
     {
-        return Truncator::truncate($text, $length, ['length_in_chars' => true, 'word_safe' => true]);
+        return Truncator::truncateWords($text, $length, $ellipsis);
     }
 
     /**
@@ -233,7 +257,7 @@ abstract class Utils
             Grav::instance()->fireEvent('onBeforeDownload', new Event(['file' => $file]));
 
             $file_parts = pathinfo($file);
-            $mimetype = Utils::getMimeType($file_parts['extension']);
+            $mimetype = Utils::getMimeByExtension($file_parts['extension']);
             $size   = filesize($file); // File size
 
             // clean all buffers
@@ -319,22 +343,84 @@ abstract class Utils
     }
 
     /**
-     * Return the mimetype based on filename
+     * Return the mimetype based on filename extension
      *
      * @param string $extension Extension of file (eg "txt")
+     * @param string $default
      *
      * @return string
      */
-    public static function getMimeType($extension)
+    public static function getMimeByExtension($extension, $default = 'application/octet-stream')
     {
         $extension = strtolower($extension);
-        $config = Grav::instance()['config']->get('media.types');
 
-        if (isset($config[$extension])) {
-            return $config[$extension]['mime'];
+        // look for some standard types
+        switch ($extension) {
+            case null:
+                return $default;
+            case 'json':
+                return 'application/json';
+            case 'html':
+                return 'text/html';
+            case 'atom':
+                return 'application/atom+xml';
+            case 'rss':
+                return 'application/rss+xml';
+            case 'xml':
+                return 'application/xml';
         }
 
-        return 'application/octet-stream';
+        $media_types = Grav::instance()['config']->get('media.types');
+
+        if (isset($media_types[$extension])) {
+            if (isset($media_types[$extension]['mime'])) {
+                return $media_types[$extension]['mime'];
+            }
+        }
+
+        return $default;
+    }
+
+    /**
+     * Return the mimetype based on filename extension
+     *
+     * @param string $mime mime type (eg "text/html")
+     * @param string $default default value
+     *
+     * @return string
+     */
+    public static function getExtensionByMime($mime, $default = 'html')
+    {
+        $mime = strtolower($mime);
+
+        // look for some standard mime types
+        switch ($mime) {
+            case '*/*':
+            case 'text/*':
+            case 'text/html':
+                return 'html';
+            case 'application/json':
+                return 'json';
+            case 'application/atom+xml':
+                return 'atom';
+            case 'application/rss+xml':
+                return 'rss';
+            case 'application/xml':
+                return 'xml';
+        }
+
+        $media_types = Grav::instance()['config']->get('media.types');
+
+        foreach ($media_types as $extension => $type) {
+            if ($extension == 'defaults') {
+                continue;
+            }
+            if (isset($type['mime']) && $type['mime'] == $mime) {
+                return $extension;
+            }
+        }
+
+        return $default;
     }
 
     /**
@@ -430,6 +516,27 @@ abstract class Utils
         }
 
         return $result;
+    }
+
+    /**
+     * Flatten an array
+     *
+     * @param $array
+     * @return array
+     */
+    public static function arrayFlatten($array)
+    {
+        $flatten = array();
+        foreach ($array as $key => $inner){
+            if (is_array($inner)) {
+                foreach ($inner as $inner_key => $value) {
+                    $flatten[$inner_key] = $value;
+                }
+            } else {
+                $flatten[$key] = $inner;
+            }
+        }
+        return $flatten;
     }
 
     /**
@@ -690,12 +797,14 @@ abstract class Utils
      * Set portion of array (passed by reference) for a dot-notation key
      * and set the value
      *
-     * @param $array
-     * @param $key
-     * @param $value
+     * @param      $array
+     * @param      $key
+     * @param      $value
+     * @param bool $merge
+     *
      * @return mixed
      */
-    public static function setDotNotation(&$array, $key, $value)
+    public static function setDotNotation(&$array, $key, $value, $merge = false)
     {
         if (is_null($key)) return $array = $value;
 
@@ -713,8 +822,139 @@ abstract class Utils
             $array =& $array[$key];
         }
 
-        $array[array_shift($keys)] = $value;
+        $key = array_shift($keys);
+
+        if (!$merge || !isset($array[$key])) {
+            $array[$key] = $value;
+        } else {
+            $array[$key] = array_merge($array[$key], $value);
+        }
+
 
         return $array;
+    }
+
+    /**
+     * Utility method to determine if the current OS is Windows
+     *
+     * @return bool
+     */
+    public static function isWindows() {
+        return strncasecmp(PHP_OS, 'WIN', 3) == 0;
+    }
+
+    /**
+     * Utility to determine if the server running PHP is Apache
+     *
+     * @return bool
+     */
+    public static function isApache() {
+        return strpos($_SERVER["SERVER_SOFTWARE"], 'Apache') !== false;
+    }
+
+    /**
+     * Sort a multidimensional array  by another array of ordered keys
+     *
+     * @param array $array
+     * @param array $orderArray
+     * @return array
+     */
+    public static function sortArrayByArray(array $array, array $orderArray) {
+        $ordered = array();
+        foreach ($orderArray as $key) {
+            if (array_key_exists($key, $array)) {
+                $ordered[$key] = $array[$key];
+                unset($array[$key]);
+            }
+        }
+        return $ordered + $array;
+    }
+
+    /**
+     * Get's path based on a token
+     *
+     * @param $path
+     * @param null $page
+     * @return string
+     */
+    public static function getPagePathFromToken($path, $page = null)
+    {
+        $path_parts = pathinfo($path);
+        $grav       = Grav::instance();
+
+        $basename = '';
+        if (isset($path_parts['extension'])) {
+            $basename = '/' . $path_parts['basename'];
+            $path     = rtrim($path_parts['dirname'], ':');
+        }
+
+        $regex = '/(@self|self@)|((?:@page|page@):(?:.*))|((?:@theme|theme@):(?:.*))/';
+        preg_match($regex, $path, $matches);
+
+        if ($matches) {
+            if ($matches[1]) {
+                if (is_null($page)) {
+                    throw new \RuntimeException('Page not available for this self@ reference');
+                }
+            } elseif ($matches[2]) {
+                // page@
+                $parts = explode(':', $path);
+                $route = $parts[1];
+                $page  = $grav['page']->find($route);
+            } elseif ($matches[3]) {
+                // theme@
+                $parts = explode(':', $path);
+                $route = $parts[1];
+                $theme = str_replace(ROOT_DIR, '', $grav['locator']->findResource("theme://"));
+
+                return $theme . $route . $basename;
+            }
+        } else {
+            return $path . $basename;
+        }
+
+        if (!$page) {
+            throw new \RuntimeException('Page route not found: ' . $path);
+        }
+
+        $path = str_replace($matches[0], rtrim($page->relativePagePath(), '/'), $path);
+
+        return $path . $basename;
+    }
+
+    public static function getUploadLimit()
+    {
+        static $max_size = -1;
+
+        if ($max_size < 0) {
+            $post_max_size = static::parseSize(ini_get('post_max_size'));
+            if ($post_max_size > 0) {
+                $max_size = $post_max_size;
+            }
+
+            $upload_max = static::parseSize(ini_get('upload_max_filesize'));
+            if ($upload_max > 0 && $upload_max < $max_size) {
+                $max_size = $upload_max;
+            }
+        }
+
+        return $max_size;
+    }
+
+    /**
+     * Parse a readable file size and return a value in bytes
+     *
+     * @param $size
+     * @return int
+     */
+    public static function parseSize($size)
+    {
+        $unit = preg_replace('/[^bkmgtpezy]/i', '', $size);
+        $size = preg_replace('/[^0-9\.]/', '', $size);
+        if ($unit) {
+            return intval($size * pow(1024, stripos('bkmgtpezy', $unit[0])));
+        } else {
+            return intval($size);
+        }
     }
 }

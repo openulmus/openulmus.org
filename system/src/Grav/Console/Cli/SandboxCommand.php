@@ -2,7 +2,7 @@
 /**
  * @package    Grav.Console
  *
- * @copyright  Copyright (C) 2014 - 2016 RocketTheme, LLC. All rights reserved.
+ * @copyright  Copyright (C) 2014 - 2017 RocketTheme, LLC. All rights reserved.
  * @license    MIT License; see LICENSE file for details.
  */
 
@@ -19,15 +19,16 @@ class SandboxCommand extends ConsoleCommand
      * @var array
      */
     protected $directories = [
+        '/assets',
         '/backup',
         '/cache',
-        '/logs',
         '/images',
-        '/assets',
+        '/logs',
+        '/tmp',
         '/user/accounts',
         '/user/config',
-        '/user/pages',
         '/user/data',
+        '/user/pages',
         '/user/plugins',
         '/user/themes',
     ];
@@ -46,7 +47,6 @@ class SandboxCommand extends ConsoleCommand
      * @var array
      */
     protected $mappings = [
-        '/.editorconfig'        => '/.editorconfig',
         '/.gitignore'           => '/.gitignore',
         '/CHANGELOG.md'         => '/CHANGELOG.md',
         '/LICENSE.txt'          => '/LICENSE.txt',
@@ -58,7 +58,6 @@ class SandboxCommand extends ConsoleCommand
         '/system'               => '/system',
         '/vendor'               => '/vendor',
         '/webserver-configs'    => '/webserver-configs',
-        '/codeception.yml'      => '/codeception.yml',
     ];
 
     /**

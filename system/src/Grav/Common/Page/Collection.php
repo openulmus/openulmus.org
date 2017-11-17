@@ -2,7 +2,7 @@
 /**
  * @package    Grav.Common.Page
  *
- * @copyright  Copyright (C) 2014 - 2016 RocketTheme, LLC. All rights reserved.
+ * @copyright  Copyright (C) 2014 - 2017 RocketTheme, LLC. All rights reserved.
  * @license    MIT License; see LICENSE file for details.
  */
 
@@ -64,6 +64,20 @@ class Collection extends Iterator
     }
 
     /**
+     * Add a page with path and slug
+     *
+     * @param $path
+     * @param $slug
+     * @return $this
+     */
+    public function add($path, $slug)
+    {
+        $this->items[$path] = ['slug' => $slug];
+
+        return $this;
+    }
+
+    /**
      *
      * Create a copy of this collection
      *
@@ -72,6 +86,38 @@ class Collection extends Iterator
     public function copy()
     {
         return new static($this->items, $this->params, $this->pages);
+    }
+
+    /**
+     *
+     * Merge another collection with the current collection
+     *
+     * @param Collection $collection
+     * @return $this
+     */
+    public function merge(Collection $collection)
+    {
+        foreach($collection as $page) {
+            $this->addPage($page);
+        }
+        return $this;
+    }
+
+    /**
+     * Intersect another collection with the current collection
+     *
+     * @param Collection $collection
+     * @return $this
+     */
+    public function intersect(Collection $collection)
+    {
+        $array1 = $this->items;
+        $array2 = $collection->toArray();
+
+        $this->items = array_uintersect($array1, $array2, function($val1, $val2) {
+            return strcmp($val1['slug'], $val2['slug']);
+        });
+        return $this;
     }
 
     /**
@@ -84,7 +130,6 @@ class Collection extends Iterator
     public function setParams(array $params)
     {
         $this->params = array_merge($this->params, $params);
-
         return $this;
     }
 
@@ -125,11 +170,29 @@ class Collection extends Iterator
     }
 
     /**
+     * Split collection into array of smaller collections.
+     *
+     * @param $size
+     * @return array|Collection[]
+     */
+    public function batch($size)
+    {
+        $chunks = array_chunk($this->items, $size, true);
+
+        $list = [];
+        foreach ($chunks as $chunk) {
+            $list[] = new static($chunk, $this->params, $this->pages);
+        }
+
+        return $list;
+    }
+
+    /**
      * Remove item from the list.
      *
      * @param Page|string|null $key
      *
-     * @return $this|void
+     * @return $this
      * @throws \InvalidArgumentException
      */
     public function remove($key = null)
@@ -154,12 +217,13 @@ class Collection extends Iterator
      * @param string $by
      * @param string $dir
      * @param array  $manual
+     * @param string $sort_flags
      *
      * @return $this
      */
-    public function order($by, $dir = 'asc', $manual = null)
+    public function order($by, $dir = 'asc', $manual = null, $sort_flags = null)
     {
-        $this->items = $this->pages->sortCollection($this, $by, $dir, $manual);
+        $this->items = $this->pages->sortCollection($this, $by, $dir, $manual, $sort_flags);
 
         return $this;
     }

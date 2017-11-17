@@ -2,7 +2,7 @@
 /**
  * @package    Grav.Common.FileSystem
  *
- * @copyright  Copyright (C) 2014 - 2016 RocketTheme, LLC. All rights reserved.
+ * @copyright  Copyright (C) 2014 - 2017 RocketTheme, LLC. All rights reserved.
  * @license    MIT License; see LICENSE file for details.
  */
 
@@ -17,7 +17,7 @@ class RecursiveFolderFilterIterator extends \RecursiveFilterIterator
     /**
      * Create a RecursiveFilterIterator from a RecursiveIterator
      *
-     * @param RecursiveIterator $iterator
+     * @param \RecursiveIterator $iterator
      */
     public function __construct(\RecursiveIterator $iterator)
     {

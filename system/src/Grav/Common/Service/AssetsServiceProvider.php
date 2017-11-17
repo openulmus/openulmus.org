@@ -2,7 +2,7 @@
 /**
  * @package    Grav.Common.Service
  *
- * @copyright  Copyright (C) 2014 - 2016 RocketTheme, LLC. All rights reserved.
+ * @copyright  Copyright (C) 2014 - 2017 RocketTheme, LLC. All rights reserved.
  * @license    MIT License; see LICENSE file for details.
  */
 
@@ -14,7 +14,8 @@ use Grav\Common\Assets;
 
 class AssetsServiceProvider implements ServiceProviderInterface
 {
-    public function register(Container $container) {
+    public function register(Container $container)
+    {
         $container['assets'] = new Assets();
     }
 }

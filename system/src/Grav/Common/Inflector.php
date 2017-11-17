@@ -2,7 +2,7 @@
 /**
  * @package    Grav.Common
  *
- * @copyright  Copyright (C) 2014 - 2016 RocketTheme, LLC. All rights reserved.
+ * @copyright  Copyright (C) 2014 - 2017 RocketTheme, LLC. All rights reserved.
  * @license    MIT License; see LICENSE file for details.
  */
 
@@ -26,11 +26,11 @@ class Inflector
     {
         if (empty($this->plural)) {
             $language = Grav::instance()['language'];
-            $this->plural = $language->translate('INFLECTOR_PLURALS', null, true);
-            $this->singular = $language->translate('INFLECTOR_SINGULAR', null, true);
-            $this->uncountable = $language->translate('INFLECTOR_UNCOUNTABLE', null, true);
-            $this->irregular = $language->translate('INFLECTOR_IRREGULAR', null, true);
-            $this->ordinals = $language->translate('INFLECTOR_ORDINALS', null, true);
+            $this->plural = $language->translate('INFLECTOR_PLURALS', null, true) ?: [];
+            $this->singular = $language->translate('INFLECTOR_SINGULAR', null, true) ?: [];
+            $this->uncountable = $language->translate('INFLECTOR_UNCOUNTABLE', null, true) ?: [];
+            $this->irregular = $language->translate('INFLECTOR_IRREGULAR', null, true) ?: [];
+            $this->ordinals = $language->translate('INFLECTOR_ORDINALS', null, true) ?: [];
         }
     }
 

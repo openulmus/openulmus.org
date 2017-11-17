@@ -2,7 +2,7 @@
 /**
  * @package    Grav.Console
  *
- * @copyright  Copyright (C) 2014 - 2016 RocketTheme, LLC. All rights reserved.
+ * @copyright  Copyright (C) 2014 - 2017 RocketTheme, LLC. All rights reserved.
  * @license    MIT License; see LICENSE file for details.
  */
 
@@ -16,6 +16,7 @@ use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Yaml\Yaml;
 
 trait ConsoleTrait
 {
@@ -40,12 +41,11 @@ trait ConsoleTrait
      */
     public function setupConsole(InputInterface $input, OutputInterface $output)
     {
-        if (Grav::instance()) {
-            Grav::instance()['config']->set('system.cache.driver', 'default');
-        }
+        // Initialize cache with CLI compatibility
+        Grav::instance()['config']->set('system.cache.cli_compatibility', true);
+        Grav::instance()['cache'];
 
         $this->argv = $_SERVER['argv'][0];
-
         $this->input  = $input;
         $this->output = $output;
 
@@ -113,19 +113,20 @@ trait ConsoleTrait
     }
 
     /**
-     * Validate if the system is based on windows or not.
+     * Load the local config file
      *
-     * @return bool
+     * @return mixed string the local config file name. false if local config does not exist
      */
-    public function isWindows()
+    public function loadLocalConfig()
     {
-        $keys = [
-            'CYGWIN_NT-5.1',
-            'WIN32',
-            'WINNT',
-            'Windows'
-        ];
+        $home_folder = getenv('HOME') ?: getenv('HOMEDRIVE') . getenv('HOMEPATH');
+        $local_config_file = $home_folder . '/.grav/config';
 
-        return array_key_exists(PHP_OS, $keys);
+        if (file_exists($local_config_file)) {
+            $this->local_config = Yaml::parse(file_get_contents($local_config_file));
+            return $local_config_file;
+        }
+
+        return false;
     }
 }

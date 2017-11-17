@@ -2,7 +2,7 @@
 /**
  * @package    Grav.Common.User
  *
- * @copyright  Copyright (C) 2014 - 2016 RocketTheme, LLC. All rights reserved.
+ * @copyright  Copyright (C) 2014 - 2017 RocketTheme, LLC. All rights reserved.
  * @license    MIT License; see LICENSE file for details.
  */
 
@@ -55,6 +55,42 @@ class User extends Data
     }
 
     /**
+     * Find a user by username, email, etc
+     *
+     * @param string $query the query to search for
+     * @param array $fields the fields to search
+     * @return User
+     */
+    public static function find($query, $fields = ['username', 'email'])
+    {
+        $account_dir = Grav::instance()['locator']->findResource('account://');
+        $files = $account_dir ? array_diff(scandir($account_dir), ['.', '..']) : [];
+
+        // Try with username first, you never know!
+        if (in_array('username', $fields)) {
+            $user = User::load($query);
+            unset($fields[array_search('username', $fields)]);
+        } else {
+            $user = User::load('');
+        }
+
+        // If not found, try the fields
+        if (!$user->exists()) {
+            foreach ($files as $file) {
+                if (Utils::endsWith($file, YAML_EXT)) {
+                    $find_user = User::load(trim(pathinfo($file, PATHINFO_FILENAME)));
+                    foreach ($fields as $field) {
+                        if ($find_user[$field] == $query) {
+                            return $find_user;
+                        }
+                    }
+                }
+            }
+        }
+        return $user;
+    }
+
+    /**
      * Remove user account.
      *
      * @param string $username
@@ -64,7 +100,7 @@ class User extends Data
     public static function remove($username)
     {
         $file_path = Grav::instance()['locator']->findResource('account://' . $username . YAML_EXT);
-        if (file_exists($file_path) && unlink($file_path)) {
+        if ($file_path && unlink($file_path)) {
             return true;
         }
 
@@ -161,6 +197,10 @@ class User extends Data
             return false;
         }
 
+        if (!$this->authenticated) {
+            return false;
+        }
+
         if (isset($this->state) && $this->state !== 'enabled') {
             return false;
         }
@@ -202,5 +242,21 @@ class User extends Data
     public function authorise($action)
     {
         return $this->authorize($action);
+    }
+
+    /**
+     * Return the User's avatar URL
+     *
+     * @return string
+     */
+    public function avatarUrl()
+    {
+        if ($this->avatar) {
+            $avatar = $this->avatar;
+            $avatar = array_shift($avatar);
+            return Grav::instance()['base_url'] . '/' . $avatar['path'];
+        } else {
+            return 'https://www.gravatar.com/avatar/' . md5($this->email);
+        }
     }
 }
