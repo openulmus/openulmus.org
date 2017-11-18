@@ -1,41 +1,49 @@
 ---
-title: Author
+title: About Open Ulmus
 metadata:
-  description: A versatile module to implement an author page
-slug: something-about-me
+  description: A deep dive into the OpenUlmus system.
+slug: learn-open-ulmus
 ---
 
-# About Me
-Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam.
+# Read the White Paper
+This is a great place for the white paper!
+
+Maybe a little description on how the idea came about.
+
+Also a great place to add in a picture of the really cool updated "here is all of our services visual'.
+
+They say a picture is worth a thousand words.
+
+In the same vein, a visual is worth a thousand first-time clients.
 
 [section name=education]
 ### Formation
 
 - [2013](#)
-  Lorem ipsum.  
-  Sed ut perspiciatis unde omnis 
+  Lorem ipsum.
+  Sed ut perspiciatis unde omnis
 - [2010](#)
-  Lorem ipsum.  
-  Sed ut perspiciatis unde omnis 
+  Lorem ipsum.
+  Sed ut perspiciatis unde omnis
 - [2005](#)
-  Lorem ipsum.  
-  Sed ut perspiciatis unde omnis  
+  Lorem ipsum.
+  Sed ut perspiciatis unde omnis
 - [2000](#)
-  Lorem ipsum.  
-  Sed ut perspiciatis unde omnis 
+  Lorem ipsum.
+  Sed ut perspiciatis unde omnis
 [/section]
 
 [section name=experience]
 ### Experience
 
 - [2015](#)
-  Graphics & Web.  
+  Graphics & Web.
   Sed ut perspiciatis unde omnis
 - [2014](#)
-  Graphics & Web.  
+  Graphics & Web.
   Sed ut perspiciatis unde omnis
 - [2013](#)
-  Art Director.   
+  Art Director.
   Sed ut perspiciatis unde omnis
 [/section]
 

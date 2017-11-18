@@ -1,6 +1,6 @@
 ---
 
-menu: Portfolio
+menu: Courses
 
 ---
 

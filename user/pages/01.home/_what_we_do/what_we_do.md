@@ -1,6 +1,6 @@
 ---
 
-menu: Business
+menu: Our Mission
 
 ---
 
