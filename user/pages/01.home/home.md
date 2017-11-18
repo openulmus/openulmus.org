@@ -1,6 +1,6 @@
 ---
-title: Home
-slug: Welcome to the future of open source knowledge sharing.
+title: Open Ulmus | An ELMS:LN Project
+slug: openulmus
 taxonomy:
     category: blog
     tag: [drupal, opencollective, FOSS, OSS, collaboration]
