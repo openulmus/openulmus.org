@@ -143,17 +143,18 @@ Please use this form to ask the Open Ulmus team additional questions and request
 [g-section name="info"]
 #####Links
 
-**GitHub:** https://github.com/elmsln/openulmus.org
-**Twitter:** https://twitter.com/openulmus
+[GitHub](https://github.com/elmsln/openulmus.org){.btn .btn-default .btn-lg}
+[Twitter](https://twitter.com/openulmus){.btn .btn-default .btn-lg}
 
 #####Contact Information
 
-**Email:** info@openulmus.org
-**Slack:** https://opencollective.slack.com/messages/C6464RTMK
+[Email](mailto:info@openulmus.org){.btn .btn-default .btn-lg}
+[Slack](https://opencollective.slack.com/messages/C6464RTMK){.btn .btn-default .btn-lg}
 
 #####Slack Office Hours
 
 Monday - Friday 8 pm - 10 pm EST
+
 Saturday - Sunday Closed
 [/g-section]
 [/g-contacts]
