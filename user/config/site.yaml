@@ -1,7 +1,9 @@
-title: Grav
+title: Open Ulmus
 author:
-  name: Joe Bloggs
-  email: 'joe@test.com'
+  name: Charles Leverington
+  email: 'charles.leverington@gmail.com'
 metadata:
-    description: 'Grav is an easy to use, yet powerful, open source flat-file CMS'
+    description: Creating an open sharing environment for all
 
+redirects:
+    /internal: '/gravstrap-theme-versatile-internal-template[303]'
