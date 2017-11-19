@@ -1,0 +1,13 @@
+name: Ulmus Gravstrap
+version: 0.1.0
+description: A Gravstrap theme for openulmus and projects.
+icon: rebel
+author:
+  name: Open Ulmus
+  email: charles.leverington@gmail.com
+homepage: https://github.com/open-ulmus/grav-theme-ulmus-gravstrap
+demo: http://demo.yoursite.com
+keywords: grav, theme, etc
+bugs: https://github.com/open-ulmus/grav-theme-ulmus-gravstrap/issues
+readme: https://github.com/open-ulmus/grav-theme-ulmus-gravstrap/blob/develop/README.md
+license: MIT
