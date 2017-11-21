@@ -13,7 +13,7 @@ ___
 
 [g-thumbnail]
 [g-thumbnail-item][/g-thumbnail-item]
-[g-thumbnail-item image="elmsln.png" url="github.com/elmsln/elmsln"][/g-thumbnail-item]
+[g-thumbnail-item image="elmsln.png" url="https://www.github.com/elmsln/elmsln"][/g-thumbnail-item]
 ## Intro to Open Ulmus & ELMS:LN
 [g-thumbnail-item][/g-thumbnail-item]
 [/g-thumbnail]
