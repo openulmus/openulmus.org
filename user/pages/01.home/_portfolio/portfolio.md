@@ -7,14 +7,15 @@ menu: Courses
 [g-portfolio attributes="id:_portfolio,class:portfolio module"]
 
 ## Open Ulmus Courses
-Below are the courses offered by Open Ulmus
+The below courses are coming soon to Open Ulmus
 
 ___
 
 [g-thumbnail]
-[g-thumbnail-item image="elmsln.png" url="http://diblas.net"][/g-thumbnail-item]
-[g-thumbnail-item image="dojo.png" url="http://diblas.net"][/g-thumbnail-item]
-[g-thumbnail-item image="dojo2.jpg" url="http://diblas.net"][/g-thumbnail-item]
+[g-thumbnail-item][/g-thumbnail-item]
+[g-thumbnail-item image="elmsln.png" url="github.com/elmsln/elmsln"][/g-thumbnail-item]
+## Intro to Open Ulmus & ELMS:LN
+[g-thumbnail-item][/g-thumbnail-item]
 [/g-thumbnail]
 
 [/g-portfolio]
