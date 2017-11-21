@@ -1,0 +1,31 @@
+<section id="pricing">
+    <div class="container pricing">
+        <div class="row">
+            <div class="pricing-image col-md-3 col-sm-12">
+                {{ page.media.images|first.cropZoom(200, 200) }}
+            </div>
+
+            <div class="pricing-about col-md-9 col-sm-12">
+                {{ page.content }}
+            </div>
+
+            {% if basic is not null %}
+            <div class="pricing-lists pricing-basic col-md-4 col-sm-12">
+                {{ basic }}
+            </div>
+            {% endif %}
+
+            {% if advanced is not null %}
+            <div class="pricing-lists pricing-advanced col-md-4 col-sm-12">
+                {{ advanced }}
+            </div>
+            {% endif %}
+
+            {% if gold is not null%}
+            <div class="pricing-gold col-md-4 col-sm-12">
+                {{ gold }}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>

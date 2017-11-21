@@ -23,7 +23,10 @@ user/data/*
 !user/data/.*
 user/plugins/*
 !user/plugins/.*
-user/themes/*
+user/themes/antimatter
+user/themes/antimatter/*
+user/themes/gravstrap-theme
+user/themes/gravstrap-theme/*
 !user/themes/.*
 user/localhost/config/security.yaml
 user/config/security.yaml
