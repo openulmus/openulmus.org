@@ -18,8 +18,8 @@ content:
         custom:
             - _header
             - _what_we_do
-            - _clients
             - _portfolio
+            - _clients
             - _team
             - _contacts
 ---
