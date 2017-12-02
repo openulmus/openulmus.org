@@ -58,7 +58,7 @@ ___
 
 [/g-team-item]
 
-[g-team-item image="djfusco.jpeg" attributes="class:col-md-4"]
+[g-team-item image="dave_fusco.jpeg" attributes="class:col-md-4"]
 #### Dave Fusco
 <div class="item-social">
 [g-link url="https://github.com/djfusco" icon="github" icon_type="fontawesome" stacked=true][/g-link]
