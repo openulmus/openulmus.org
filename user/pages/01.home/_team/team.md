@@ -66,6 +66,16 @@ ___
 </div>
 
 [/g-team-item]
+
+[g-team-item image="michael_collins.jpeg" attributes="class:col-md-4"]
+#### Michael Collins
+<div class="item-social">
+[g-link url="https://github.com/michael-collins" icon="github" icon_type="fontawesome" stacked=true][/g-link]
+[g-link url="https://twitter.com/_mike_collins" icon="twitter" icon_type="fontawesome" stacked=true][/g-link]
+</div>
+
+[/g-team-item]
+
 [/g-team]
 
 <section>
