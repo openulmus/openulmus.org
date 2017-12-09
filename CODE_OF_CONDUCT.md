@@ -1,61 +1,46 @@
-# ELMS:LN Code of Conduct
+# Contributor Covenant Code of Conduct
 
-## Our pledge
+## Our Pledge
 
-In the interest of fostering an open and welcoming environment, we as contributors and maintainers pledge to making participation in our project as awesome as we possibly can.
-It is the policy of ELMS:LN to maintain an environment free of harassment and free of discrimination against any person because of age, race, color, ancestry, national origin, religion,
-creed, service in the uniformed services (as defined in state and federal law), veteran status, sex, sexual orientation,
-marital or family status, pregnancy, pregnancy-related conditions, physical or mental disability, gender, perceived gender,
-gender identity, genetic information or political ideas.
+In the interest of fostering an open and welcoming environment, we as contributors and maintainers pledge to making participation in our project and our community a harassment-free experience for everyone, regardless of age, body size, disability, ethnicity, gender identity and expression, level of experience, nationality, personal appearance, race, religion, or sexual identity and orientation.
 
-Discriminatory conduct and harassment, as well as sexual misconduct and harassment or relationship violence, violates the dignity of individuals, impedes the realization of ELMS:LN’s mission, and will not be tolerated in our community.
+## Our Standards
 
-## Our standards
+Examples of behavior that contributes to creating a positive environment include:
 
-How you will keep our community awesome:
-
-* Showing empathy to everyone
+* Using welcoming and inclusive language
 * Being respectful of differing viewpoints and experiences
-* Accepting constructive criticism
-* Acting in the best interests of the community
-* Only promoting and utilizing Free Open Source Solutions (FOSS)
+* Gracefully accepting constructive criticism
+* Focusing on what is best for the community
+* Showing empathy towards other community members
 
-Behaviors our community will not tolerate:
+Examples of unacceptable behavior by participants include:
 
-* Harassment - public or private
-* Unwelcome sexual attention or advances
-* Trolling - derogatory interactions and personal or political attacks
-* Doxing - publishing others' private information without permission
-* Any conduct reasonably considered inappropriate in professional settings
+* The use of sexualized language or imagery and unwelcome sexual attention or advances
+* Trolling, insulting/derogatory comments, and personal or political attacks
+* Public or private harassment
+* Publishing others' private information, such as a physical or electronic address, without explicit permission
+* Other conduct which could reasonably be considered inappropriate in a professional setting
 
-## Our responsibilities
+## Our Responsibilities
 
-Project maintainers are responsible for clarifying the standards of acceptable behavior and are expected
-to take appropriate and fair corrective action in response to any instances of unacceptable behavior.
+Project maintainers are responsible for clarifying the standards of acceptable behavior and are expected to take appropriate and fair corrective action in response to any instances of unacceptable behavior.
 
-Project maintainers have the right to remove or modify comments, commits, code, documentation,
-issues, and other contributions that are not aligned to this Code of Conduct.
+Project maintainers have the right and responsibility to remove, edit, or reject comments, commits, code, wiki edits, issues, and other contributions that are not aligned to this Code of Conduct, or to ban temporarily or permanently any contributor for other behaviors that they deem inappropriate, threatening, offensive, or harmful.
 
 ## Scope
 
-This Code of Conduct applies both within project spaces and in spaces where an individual is
-representing the project or its community. Examples of representing a project or community include using
-an official project e-mail address, posting via an official social media account, or acting as an official
-representative at an event. Representation of a project may be further defined and clarified
-by project maintainers.
-
-The ELMS:LN Code of Conduct applies to anyone involved in the project, including project maintainers.
+This Code of Conduct applies both within project spaces and in public spaces when an individual is representing the project or its community. Examples of representing a project or community include using an official project e-mail address, posting via an official social media account, or acting as an appointed representative at an online or offline event. Representation of a project may be further defined and clarified by project maintainers.
 
 ## Enforcement
 
-Instances of behavior which violates the ELMS:LN Code of Conduct may be reported by contacting
-project leadership at elmsln@psu.edu. The project leadership will review and investigate all complaints, and will
-respond in a way that it deems appropriate. The project leadership is obligated to maintain
-confidentiality with regard to the reporter of an incident. Further details of specific enforcement policies
-may be posted separately.
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting the project team at contact@getgrav.org. The project team will review and investigate all complaints, and will respond in a way that it deems appropriate to the circumstances. The project team is obligated to maintain confidentiality with regard to the reporter of an incident. Further details of specific enforcement policies may be posted separately.
 
-The ELMS:LN Code of Conduct was originally produced in the United States of America and operates based on US legal norms
-which presumes innocence until guilt is proven.
+Project maintainers who do not follow or enforce the Code of Conduct in good faith may face temporary or permanent repercussions as determined by other members of the project's leadership.
 
-## CoC attribution
-The ELMS:LN Code of Conduct has been forked from the Contributor Covenant, version 1.4, available at http://contributor-covenant.org/version/1/4
+## Attribution
+
+This Code of Conduct is adapted from the [Contributor Covenant][homepage], version 1.4, available at [http://contributor-covenant.org/version/1/4][version]
+
+[homepage]: http://contributor-covenant.org
+[version]: http://contributor-covenant.org/version/1/4/

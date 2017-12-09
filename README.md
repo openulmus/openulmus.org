@@ -1,6 +1,6 @@
-![Open Ulmus](https://raw.githubusercontent.com/elmsln/elmsln/master/docs/assets/snowflake-with-text.png "Open Ulmus | An ELMS:LN Project")
+![Ulmus - Grav CMS](https://raw.githubusercontent.com/elmsln/elmsln/master/docs/assets/snowflake-with-text.png "Ulmus - Grav CMS")
 
-# Open Ulmus | An [ELMS:LN](https://www.elmsln.org/) Project
+# Ulmus - Grav CMS | An [ELMS:LN](https://www.elmsln.org/) Project
 
 Open Ulmus is an [open collective](https://opencollective.com/openulmus "Open Collective - Open Ulmus") sustained project for the public production and sharing of knowledge.
 
@@ -12,13 +12,49 @@ Learn more about ELMS:LN @ [elmsln.org](https://www.elmsln.org "elmsln.org")
 
 <img src="https://opencollective-production.s3-us-west-1.amazonaws.com/ef668240-c9ac-11e7-a3f9-dd744d5ccb80.png" height="200" title="Open Ulmus  Powered by ELMS:LN" alt="Powered by ELMS:LN">
 
+## Requirements
+- PHP 5.5.9 or higher. Check the [required modules list](https://learn.getgrav.org/basics/requirements#php-requirements)
+- Check the [Apache](https://learn.getgrav.org/basics/requirements#apache-requirements) or [IIS](https://learn.getgrav.org/basics/requirements#iis-requirements) requirements
+
+## Installation
+
+Installing the Ulmus-fork of GravCMS (including the Gravstrap theme) requires the following installation steps:
+
+> _**Note:** These instructions assume installation of copy will be done within user's ~/Sites directory. For Server installation, refer to GravCMS documentation._
+
+1. Clone the Repository
+```
+cd ~/Sites
+git clone git@github.com:openlearninglabs/ulmus-grav-cms.git
+```
+
+2. Install GravCMS
+```
+cd ~/Sites/ulmus-grav-cms
+composer install --no-dev -o
+cd ~/Sites/ulmus-grav-cms/grav
+bin/grav install
+bin/gpm selfupgrade -f
+```
+
+3. Install Gravstrap Theme
+The Gravstrap theme is the parent-theme for the `ulmus-gravstrap` theme and requires installation for the site to function properly.
+```
+cd ~/Sites/ulmus-grav-cms
+bin/gpm install gravstrap-theme
+(Answer 'Y' when prompted to install dependencies)
+(Answer 'N' when prompted to install demo-content, unless planning to use it)
+bin/grav clear-cache
+```
+
+
 ## Status
 
- [![OpenCollective](https://opencollective.com/elmsln/backers/badge.svg)](#backers) [![OpenCollective](https://opencollective.com/elmsln/sponsors/badge.svg)](#sponsors)
+ [![OpenCollective](https://opencollective.com/openulmus/backers/badge.svg)](#backers) [![OpenCollective](https://opencollective.com/openulmus/sponsors/badge.svg)](#sponsors)\
 
 # Issues
 
-If you notice an issue or have a question please file it in our [issue queue](https://github.com/elmsln/openulmus.org/issues).
+If you notice an issue or have a question please file it in our [issue queue](https://github.com/openulmus/openulmus.org/issues).
 
 # Documentation
 
