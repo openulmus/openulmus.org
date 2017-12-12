@@ -4,7 +4,7 @@ menu: Team
 
 ---
 
-[g-team name=team attributes="class:team module"]
+[g-team name="team" attributes="id:_team,class:team module"]
 
 ## Open Ulmus Team
 ___
