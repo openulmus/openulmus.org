@@ -18,6 +18,7 @@ content:
         custom:
             - _header
             - _what_we_do
+            - _support
             - _portfolio
             - _clients
             - _team
