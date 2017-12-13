@@ -77,12 +77,3 @@ ___
 [/g-team-item]
 
 [/g-team]
-
-<section>
-<div class="container">
-<div class="row">
-<div class="col-md-12">
-<script src="https://opencollective.com/openulmus/banner.js"></script>
-</div>
-</div>
-</section>
