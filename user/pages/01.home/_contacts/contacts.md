@@ -4,7 +4,7 @@ menu: Contact us
 
 ---
 
-[g-contacts name=contacts attributes="class:module contacts" info_attributes="class:col-md-4" form_attributes="class:col-md-8"]
+[g-contacts name=contacts attributes="id:_contacts,class:module contacts" info_attributes="class:col-md-4" form_attributes="class:col-md-8"]
 
 ## Get in touch
 Need more information? Reach out to the Open Ulmus team using the following methods.
